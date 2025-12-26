@@ -4,15 +4,9 @@
 
 Primary source:
 
-- **Ministry of Home Affairs (Kemendagri)**
-  - Official administrative code publications
-  - Legal basis for province, regency/city, district, and village codes
-
-Secondary sources (for cross-checking and enrichment):
-
-- **Statistics Indonesia (BPS)**
-  - Administrative reference tables
-  - Population and statistical context (where applicable)
+- Minister of Home Affairs Decree No. 300.2.2-2138 of 2025  
+  Source URL: https://api-pelita.kemendagri.go.id/uploads/foto/1747706365683.pdf  
+  Original filename: 1747706365683.pdf
 
 Administrative data is treated as the **canonical source of truth**
 for codes, names, and hierarchical relationships.
