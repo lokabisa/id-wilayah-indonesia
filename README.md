@@ -1,16 +1,16 @@
 # id-wilayah-indonesia 🇮🇩
 
-Reference dataset, geospatial boundaries, and API
-for Indonesian administrative regions.
+Reference datasets and reproducible pipelines
+for Indonesian administrative divisions and their geospatial representations.
 
 ## Scope
 
 This repository provides:
 
-- Official administrative codes (BPS)
-- Administrative boundaries (GeoJSON)
-- Reproducible data pipeline
-- Read-only public API
+- Official administrative division datasets (codes & hierarchy)
+- Geospatial boundary datasets (GeoJSON)
+- Reproducible data pipelines
+- Optional read-only API outputs
 
 ## Administrative Levels
 
@@ -22,18 +22,42 @@ This repository provides:
 
 ## Data Sources
 
-- BPS (codes and naming)
+### Administrative Data
+
+- Ministry of Home Affairs (Kemendagri) — primary authority
+- Statistics Indonesia (BPS) — secondary reference and cross-checking
+
+### Geospatial Data
+
 - OpenStreetMap contributors (geometry)
+- Extracted via Geofabrik (ODbL 1.0)
 
-## Structure
+### Supplementary Data
 
-- `data/bps` — administrative codes (source of truth)
-- `geojson` — final geospatial boundaries
-- `pipeline` — reproducible data pipeline
-- `public/api` — static API output (GitHub Pages)
-- `api` — optional runtime API (Cloudflare Workers)
+- PT Pos Indonesia — postal code reference data
+
+## Repository Structure
+
+- `data/kemendagri` — administrative datasets (source of truth)
+- `data/postal` — postal code reference data
+- `geojson` — geospatial boundary outputs
+- `pipeline` — reproducible administrative and geospatial pipelines
+- `public/api` — static API outputs (e.g. GitHub Pages)
+- `api` — optional runtime API (e.g. Cloudflare Workers)
+
+## Design Principles
+
+- Clear separation between administrative and geospatial data
+- Reproducible and source-traceable pipelines
+- Canonical administrative codes without separators
+- Dataset-first, API as a derived layer
+- Administrative data is authoritative for identity and hierarchy;
+  geospatial data is authoritative for geometry only
 
 ## License
 
-- Code & pipeline: MIT
+- Code & pipelines: MIT
 - Geospatial data: ODbL (derived from OpenStreetMap)
+
+> “This license applies to code, schemas, and pipeline scripts only.
+> Data is subject to its respective source licenses.”
