@@ -156,20 +156,92 @@ def validate_regencies(regencies, provinces):
                     f"(got '{area}')"
                 )
 
+def validate_districts(districts, regencies):
+    """
+    Validate district.csv
+    """
+    required_columns = {"code", "name", "regency_code"}
+    seen_codes = set()
+    regency_codes = {r["code"].strip() for r in regencies}
+
+    for idx, row in enumerate(districts, start=1):
+        # --- required columns ---
+        missing = required_columns - row.keys()
+        if missing:
+            fail(f"[district.csv] Row {idx}: missing columns {missing}")
+
+        code = row.get("code", "").strip()
+        name = row.get("name", "").strip()
+        regency_code = row.get("regency_code", "").strip()
+
+        # --- code rules ---
+        if not code:
+            fail(f"[district.csv] Row {idx}: code is empty")
+
+        if not code.isdigit():
+            fail(f"[district.csv] Row {idx}: code must be numeric (got '{code}')")
+
+        if len(code) != 6:
+            fail(f"[district.csv] Row {idx}: code must be 6 digits (got '{code}')")
+
+        if code in seen_codes:
+            fail(f"[district.csv] Row {idx}: duplicate code '{code}'")
+
+        seen_codes.add(code)
+
+        # --- name ---
+        if not name:
+            fail(f"[district.csv] Row {idx}: name is empty")
+
+        # --- regency_code ---
+        if not regency_code:
+            fail(f"[district.csv] Row {idx}: regency_code is empty")
+
+        if not regency_code.isdigit():
+            fail(
+                f"[district.csv] Row {idx}: regency_code must be numeric "
+                f"(got '{regency_code}')"
+            )
+
+        if len(regency_code) != 4:
+            fail(
+                f"[district.csv] Row {idx}: regency_code must be 4 digits "
+                f"(got '{regency_code}')"
+            )
+
+        if regency_code not in regency_codes:
+            fail(
+                f"[district.csv] Row {idx}: regency_code '{regency_code}' "
+                f"does not exist in regency.csv"
+            )
+
+        # --- forbidden attributes ---
+        if "area_km2" in row and row.get("area_km2", "").strip():
+            fail(
+                f"[district.csv] Row {idx}: area_km2 is not allowed at district level"
+            )
+
+        if "island_count" in row and row.get("island_count", "").strip():
+            fail(
+                f"[district.csv] Row {idx}: island_count is not allowed at district level"
+            )
+
 
 def main():
     try:
         provinces = load_csv("data/kemendagri/province.csv")
         regencies = load_csv("data/kemendagri/regency.csv")
+        districts = load_csv("data/kemendagri/district.csv")
 
         validate_provinces(provinces)
         validate_regencies(regencies, provinces)
+        validate_districts(districts, regencies)
 
     except Exception as e:
         print(f"VALIDATION FAILED: {e}", file=sys.stderr)
         sys.exit(1)
 
-    print("Province & regency validation passed ✔")
+    print("Province, regency & district validation passed ✔")
 
 
 if __name__ == "__main__":
